@@ -1,7 +1,7 @@
 {
-  "name": "react-size-reporter",
+  "name": "size-reporter",
   "version": "0.1.0",
-  "description": "A higher order component that reports size and top for components",
+  "description": "Reports width, height, and top for selected DOM elements",
   "main": "index.js",
   "scripts": {
     "test": "mocha src/tests/unit --recursive --reporter spec --compilers js:babel-register",
@@ -37,9 +37,9 @@
     ],
     "report-dir": "coverage"
   },
-  "precommit" : [
-    "npm run lint",
-    "npm run test"
+  "pre-commit": [
+    "lint",
+    "test"
   ],
   "devDependencies": {
     "babel-cli": "^6.7.7",
@@ -51,19 +51,16 @@
     "cross-env": "^1.0.7",
     "eslint": "^2.8.0",
     "eslint-plugin-react": "^5.0.1",
+    "lodash": "^4.11.1",
     "jsdom": "^8.4.1",
     "mocha": "^2.4.5",
     "nyc": "^6.4.0",
-    "precommit": "^1.2.0",
+    "precommit-hook": "^3.0.0",
     "react": "^15.0.1",
     "react-addons-test-utils": "^15.0.1",
     "rimraf": "^2.5.2"
   },
   "dependencies": {
-    "lodash": "^4.11.1"
-  },
-  "peerDependencies": {
-    "react": "^0.14 || ^15.0"
   },
   "engines": {
     "node": "4.x || 5.x"

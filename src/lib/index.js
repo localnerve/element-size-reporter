@@ -7,11 +7,7 @@
  * Reports at componentDidMount and on window resize.
  */
 /* global document, window */
-import React from 'react';
-import debounce from 'lodash/debounce';
-
 const __DEV__ = process.env.NODE_ENV !== 'production';
-const defaultResizeWait = 100;
 
 /***
  * A tracker contains a reporter count and a call count to determine the value
@@ -69,16 +65,13 @@ function round (value, rules) {
  * Factory to create a high order React component to report size changes as
  * the result of window resize events.
  *
- * @param {Object} Component - The React class the size reporter wraps.
  * @param {String} selector - The selector used to find the DOM element to
  * report on.
  * @param {Function} reporter - The function called to report size updates.
- * @param {Object} options - Options to control what gets reported.
+ * @param {Object} [options] - Options to control what gets reported.
  * @param {String} [options.group] - An arbitrary group name under which size
  * reporters are tracked. This accumulate flag in the report is determined by
  * reporters in a group. Defaults to 'global'.
- * @param {Number} [options.resizeWait] - ms to wait until reporting resize
- * update. defaults to 100ms.
  * @param {Boolean} [options.reportWidth] - True to report width.
  * @param {Boolean} [options.reportHeight] - True to report height.
  * @param {Boolean} [options.reportTop] - True to report top.
@@ -86,13 +79,12 @@ function round (value, rules) {
  * @param {Number} [options.grow.top] - Nearest multiple to grow size to.
  * @param {Number} [options.grow.width] - Nearest multiple grow size to.
  * @param {Number} [options.grow.height] - Nearest multiple to grow size to.
- * @returns {Object} A SizeReporter React class that renders the given
- *`Component`, reporting on DOM element found at `selector`.
+ * @returns {Function} The sizeReporter function, reports on DOM element found
+ * at `selector`.
  */
 export default
-function createSizeReporter (Component, selector, reporter, options) {
+function createSizeReporter (selector, reporter, options) {
   options = options || {};
-  options.resizeWait = options.resizeWait || defaultResizeWait;
   options.group = options.group || 'global';
 
   if (__DEV__) {
@@ -100,6 +92,7 @@ function createSizeReporter (Component, selector, reporter, options) {
       Object.keys(trackers).forEach((key) => {
         delete trackers[key];
       });
+      return;
     }
   }
 
@@ -119,7 +112,7 @@ function createSizeReporter (Component, selector, reporter, options) {
    * Rounding is used on clientRect to reduce the differences and optionally
    * grow the reported sizes if requested.
    */
-  function reportSize () {
+  return function sizeReporter () {
     let width, height, top;
 
     const el = document.querySelector(selector);
@@ -162,31 +155,4 @@ function createSizeReporter (Component, selector, reporter, options) {
 
     tracker.callCount++;
   }
-
-  return React.createClass({
-    /**
-     * Render the wrapped component with props.
-     */
-    render: function () {
-      return React.createElement(Component, this.props);
-    },
-
-    /**
-     * Set up the resize event listener and kick off the first report.
-     */
-    componentDidMount: function () {
-      window.addEventListener('resize', this.resizeHandler);
-      // reportSize now.
-      setTimeout(reportSize, 0);
-    },
-
-    /**
-     * Remove the resize event listener.
-     */
-    componentWillUnmount: function () {
-      window.removeEventListener('resize', this.resizeHandler);
-    },
-
-    resizeHandler: debounce(reportSize, options.resizeWait)
-  });
 }

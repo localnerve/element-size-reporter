@@ -2,11 +2,11 @@
  * Copyright (c) 2016 Alex Grant (@localnerve), LocalNerve LLC
  * Copyrights licensed under the BSD License. See the accompanying LICENSE file for terms.
  */
-/* global before, after, describe, it */
+/* global before, beforeEach, after, afterEach, describe, it */
 import { expect } from 'chai';
 import React from 'react';
 import { domStart, domStop, mockStart, mockEnd } from '../utils/testdom';
-import Simple from '../fixtures/Simple';
+import { Simple, setMockReporter } from '../fixtures/Simple';
 import createSizeReporter from '../../lib';
 
 describe('sizeReporter', () => {
@@ -14,17 +14,16 @@ describe('sizeReporter', () => {
 
   before('sizeReporter', () => {
     domStart();
-    testUtils = require('react-addons-test-utils');
   });
 
   after('sizeReporter', () => {
     domStop();
   });
 
-  describe('simple tests', () => {
+  describe('structure', () => {
     it('should report and have expected report items with correct types',
     (done) => {
-      const Class = createSizeReporter(Simple, '.contained', (data) => {
+      const reporter = createSizeReporter('.nothing', (data) => {
         expect(typeof data.width).to.equal('number');
         expect(typeof data.height).to.equal('number');
         expect(typeof data.top).to.equal('number');
@@ -36,24 +35,46 @@ describe('sizeReporter', () => {
         reportTop: true
       });
 
-      testUtils.renderIntoDocument(React.createElement(Class));
+      reporter();
+    });
+  });
+
+  describe('react', () => {
+    let testUtils;
+
+    before('react', () => {
+      testUtils = require('react-addons-test-utils');
     });
 
-    it('should render the contained component', () => {
-      const Class = createSizeReporter(Simple, '.contained', () => {});
-      const element = React.createElement(Class);
+    beforeEach(() => {
+      // Clear the group trackers
+      createSizeReporter(null, null, {
+        _clearTrackers: true
+      });
+    });
 
+    afterEach(() => {
+      setMockReporter(null);
+    });
+
+    it('should render and execute action', (done) => {
+      const element = React.createElement(Simple);
       const component = testUtils.renderIntoDocument(element);
-
       const result = testUtils.findRenderedDOMComponentWithClass(
         component, 'contained'
       );
 
+      // Render test
       expect(result.textContent).to.match(/Simple Test/);
+
+      setTimeout(function () {
+        // Action test. Executes on componentDidMount so action should've run.
+        expect(result.textContent).to.match(/Action/);
+        done();
+      }, 0);
     });
 
-    it('should accumulate if multiple reporters in same group',
-    (done) => {
+    it('should accumulate if multiple reporters in same group', (done) => {
       const reporters = 2;
       let reportCall = 0;
 
@@ -75,136 +96,132 @@ describe('sizeReporter', () => {
         }
       }
 
-      const children = [
-        createSizeReporter(Simple, '.contained', handleReport, {
-          _clearTrackers: true,
-          reportWidth: true
-        }),
-        createSizeReporter(Simple, '.contained', handleReport, {
-          reportWidth: true
-        })
-      ].map((childClass, index) => {
+      setMockReporter(handleReport);
+
+      const children = [Simple, Simple].map((childClass, index) => {
         return React.createElement(childClass, { key: index });
       });
 
       testUtils.renderIntoDocument(React.createElement('div', {}, children));
     });
+  });
 
-    describe('mocked tests', () => {
-      const top = 202.2, right = 600, bottom = 600, left = 202.2,
-        pageYOffset = 200, clientTop = 100;
+  describe('mocked tests', () => {
+    const top = 202.2, right = 600, bottom = 600, left = 202.2,
+      pageYOffset = 200, clientTop = 100;
 
-      function mockQuerySelector () {
-        return {
-          getBoundingClientRect: function () {
-            return {
-              top,
-              right,
-              bottom,
-              left
-            };
-          }
+    function mockQuerySelector () {
+      return {
+        getBoundingClientRect: function () {
+          return {
+            top,
+            right,
+            bottom,
+            left
+          };
         }
-      }
+      };
+    }
 
-      before('mocks', () => {
-        mockStart({
-          querySelector: mockQuerySelector,
-          pageYOffset,
-          clientTop
-        });
+    before('mocks', () => {
+      mockStart({
+        querySelector: mockQuerySelector,
+        pageYOffset,
+        clientTop
+      });
+    });
+
+    after('mocks', () => {
+      mockEnd();
+    });
+
+    beforeEach(() => {
+      // Clear the group trackers
+      createSizeReporter(null, null, {
+        _clearTrackers: true
+      });
+    });
+
+    it('should compute values as expected', (done) => {
+      const reporter = createSizeReporter('.mock', (data) => {
+        expect(data.width).to.equal(Math.round(right - left));
+        expect(data.height).to.equal(Math.round(bottom - top));
+        expect(data.top).to.equal(Math.round(
+          top + (pageYOffset - clientTop)
+        ));
+        expect(data.accumulate).to.equal(false);
+        done();
+      }, {
+        reportWidth: true,
+        reportHeight: true,
+        reportTop: true
       });
 
-      after('mocks', () => {
-        mockEnd();
+      reporter();
+    });
+
+    it('should grow width on multiple as expected', (done) => {
+      const multiple = 10;
+
+      const reporter = createSizeReporter('.mock', (data) => {
+        expect(data.width).to.equal(
+          Math.ceil((right - left)/multiple) * multiple
+        );
+        done();
+      }, {
+        reportWidth: true,
+        grow: {
+          width: multiple
+        }
       });
 
-      it('should return compute values as expected', (done) => {
-        const Class = createSizeReporter(Simple, '.contained', (data) => {
-          expect(data.width).to.equal(Math.round(right - left));
-          expect(data.height).to.equal(Math.round(bottom - top));
-          expect(data.top).to.equal(Math.round(
-            top + (pageYOffset - clientTop)
-          ));
-          expect(data.accumulate).to.equal(false);
-          done();
-        }, {
-          _clearTrackers: true,
-          reportWidth: true,
-          reportHeight: true,
-          reportTop: true
-        });
+      reporter();
+    });
 
-        testUtils.renderIntoDocument(React.createElement(Class));
+    it('should grow top on multiple as expected', (done) => {
+      const multiple = 10;
+
+      const reporter = createSizeReporter('.mock', (data) => {
+        expect(data.top).to.equal(
+          Math.floor((top + (pageYOffset - clientTop))/multiple) * multiple
+        );
+        expect(data.top - (pageYOffset - clientTop)).to.be.below(top);
+        done();
+      }, {
+        reportTop: true,
+        grow: {
+          top: multiple
+        }
       });
 
-      it('should grow width on multiple as expected', (done) => {
-        const multiple = 10;
+      reporter();
+    });
 
-        const Class = createSizeReporter(Simple, '.contained', (data) => {
-          expect(data.width).to.equal(
-            Math.ceil((right - left)/multiple) * multiple
-          );
-          done();
-        }, {
-          _clearTrackers: true,
-          reportWidth: true,
-          grow: {
-            width: multiple
-          }
-        });
-
-        testUtils.renderIntoDocument(React.createElement(Class));
+    it('should handle missing grow option with round', (done) => {
+      const reporter = createSizeReporter('.mock', (data) => {
+        expect(data.width).to.equal(
+          Math.round(right - left)
+        );
+        done();
+      }, {
+        reportWidth: true
       });
 
-      it('should grow top on multiple as expected', (done) => {
-        const multiple = 10;
+      reporter();
+    });
 
-        const Class = createSizeReporter(Simple, '.contained', (data) => {
-          expect(data.top).to.equal(
-            Math.floor((top + (pageYOffset - clientTop))/multiple) * multiple
-          );
-          expect(data.top - (pageYOffset - clientTop)).to.be.below(top);
-          done();
-        }, {
-          _clearTrackers: true,
-          reportTop: true,
-          grow: {
-            top: multiple
-          }
-        });
-
-        testUtils.renderIntoDocument(React.createElement(Class));
+    it('should handle missing grow option prop without round', (done) => {
+      const reporter = createSizeReporter('.mock', (data) => {
+        expect(data.width).to.equal(
+          Math.ceil(right - left)
+        );
+        done();
+      }, {
+        reportWidth: true,
+        grow: {}
       });
 
-      it('should handle missing grow option with round', (done) => {
-        const Class = createSizeReporter(Simple, '.contained', (data) => {
-          expect(data.width).to.equal(
-            Math.round(right - left)
-          );
-          done();
-        }, {
-          _clearTrackers: true,
-          reportWidth: true
-        });
-
-        testUtils.renderIntoDocument(React.createElement(Class));
-      });
-
-      it('should handle missing grow option prop without round', (done) => {
-        const Class = createSizeReporter(Simple, '.contained', (data) => {
-          expect(data.width).to.equal(
-            Math.ceil(right - left)
-          );
-          done();
-        }, {
-          _clearTrackers: true,
-          reportWidth: true,
-          grow: {}
-        });
-
-        testUtils.renderIntoDocument(React.createElement(Class));
-      });
+      reporter();
     });
   });
 });
