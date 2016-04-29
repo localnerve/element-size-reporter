@@ -1,0 +1,17 @@
+{
+  "presets": ["es2015", "react"],
+  "only": [
+    "src/*"
+  ],
+  "env": {
+    "cover": {
+      "plugins": [
+        [
+          "__coverage__", {
+            "only": "src/lib"
+          }
+        ]
+      ]
+    }
+  }
+}

@@ -1,0 +1,7 @@
+.git/
+.nyc_output/
+coverage/
+output/
+node_modules/
+index.js
+tmp
