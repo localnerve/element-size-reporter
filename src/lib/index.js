@@ -3,8 +3,7 @@
  * Copyrights licensed under the BSD License.
  * See the accompanying LICENSE file for terms.
  *
- * A higher order component to report rendered component sizes.
- * Reports at componentDidMount and on window resize.
+ * Report selected DOM element size and top.
  */
 /* global document, window */
 const __DEV__ = process.env.NODE_ENV !== 'production';
@@ -62,8 +61,7 @@ function round (value, rules) {
 }
 
 /**
- * Factory to create a high order React component to report size changes as
- * the result of window resize events.
+ * Factory to create a function to report selected DOM element size and top.
  *
  * @param {String} selector - The selector used to find the DOM element to
  * report on.
