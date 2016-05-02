@@ -20,13 +20,13 @@ I use this in a React flux flow to calculate background image dimensions and pos
 ```javascript
 createSizeReporter (selector, reporter, options)
 ```
-Returns a size reporter function that creates a [Size Report](#Size-Report) of the rendered element found for given `selector`. Sends the report to `reporter` when executed.
+Returns a size reporter function that creates a [Size Report](#size-report) of the rendered element found for given `selector`. Sends the report to `reporter` when executed.
 
 ### Parameters
 
 `selector` - {String} A CSS selector that finds the DOM element to report size on.
 
-`reporter` - {Function} The function that receives the [Size Report](#Size-Report).
+`reporter` - {Function} The function that receives the [Size Report](#size-report).
 
 `options` - {Object} See [Options](#Options).
 
