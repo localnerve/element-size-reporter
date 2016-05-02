@@ -64,6 +64,6 @@
   },
   "dependencies": {},
   "engines": {
-    "node": "4.x || 5.x"
+    "node": ">= 4.x"
   }
 }
