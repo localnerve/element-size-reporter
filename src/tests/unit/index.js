@@ -39,6 +39,20 @@ describe('sizeReporter', () => {
     });
   });
 
+  describe('bad args', () => {
+    it('should throw if no selector supplied', () => {
+      expect(function () {
+        createSizeReporter('', () => {});
+      }).to.throw(Error);
+    });
+
+    it('should throw if no reporter function supplied', () => {
+      expect(function () {
+        createSizeReporter('.nothing', 'bad');
+      }).to.throw(Error);
+    });
+  });
+
   describe('react', () => {
     let testUtils;
 

@@ -94,6 +94,18 @@ function createSizeReporter (selector, reporter, options) {
     }
   }
 
+  if (!selector) {
+    throw new Error(
+      'Invalid selector supplied to createSizeReporter.'
+    );
+  }
+
+  if (typeof reporter !== 'function') {
+    throw new Error (
+      'Invalid reporter function supplied to createSizeReporter'
+    );
+  }
+
   if (!trackers[options.group]) {
     trackers[options.group] = {
       reporters: 0,
