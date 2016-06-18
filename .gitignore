@@ -17,6 +17,10 @@ node_modules
 # Optional REPL history
 .node_repl_history
 
+# No jshint expected
+.jshintrc
+.jshintignore
+
 # Project specific
 .nyc_output/
 /coverage
