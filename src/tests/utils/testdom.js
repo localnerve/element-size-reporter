@@ -5,8 +5,7 @@
  * Start/stop jsdom environment
  */
 /* global global, document */
-import jsdomLib from 'jsdom';
-const jsdom = jsdomLib.jsdom;
+import { jsdom } from 'jsdom';
 
 /**
  * Shim document, window, and navigator with jsdom if not defined.

@@ -15,11 +15,12 @@ function reporter (data) {
     testReporter(data);
   }
 }
-function setMockReporter (reporter) {
+
+export function setMockReporter (reporter) {
   testReporter = reporter;
 }
 
-const Simple = React.createClass({
+export const Simple = React.createClass({
   getInitialState: function () {
     return {
       action: false
@@ -78,8 +79,3 @@ const Simple = React.createClass({
     );
   }
 });
-
-export {
-  Simple,
-  setMockReporter
-}
