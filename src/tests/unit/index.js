@@ -122,7 +122,8 @@ describe('sizeReporter', () => {
 
   describe('mocked tests', () => {
     const top = 202.2, right = 600, bottom = 600, left = 202.2,
-      pageYOffset = 200, clientTop = 100;
+      pageYOffset = 200;
+    let domProps;
 
     function mockQuerySelector () {
       return {
@@ -138,10 +139,9 @@ describe('sizeReporter', () => {
     }
 
     before('mocks', () => {
-      mockStart({
+      domProps = mockStart({
         querySelector: mockQuerySelector,
-        pageYOffset,
-        clientTop
+        pageYOffset
       });
     });
 
@@ -161,7 +161,7 @@ describe('sizeReporter', () => {
         expect(data.width).to.equal(Math.round(right - left));
         expect(data.height).to.equal(Math.round(bottom - top));
         expect(data.top).to.equal(Math.round(
-          top + (pageYOffset - clientTop)
+          top + (pageYOffset - domProps.clientTop)
         ));
         expect(data.accumulate).to.equal(false);
         done();
@@ -197,9 +197,9 @@ describe('sizeReporter', () => {
 
       const reporter = createSizeReporter('.mock', (data) => {
         expect(data.top).to.equal(
-          Math.floor((top + (pageYOffset - clientTop))/multiple) * multiple
+          Math.floor((top + (pageYOffset - domProps.clientTop))/multiple) * multiple
         );
-        expect(data.top - (pageYOffset - clientTop)).to.be.below(top);
+        expect(data.top - (pageYOffset - domProps.clientTop)).to.be.below(top);
         done();
       }, {
         reportTop: true,

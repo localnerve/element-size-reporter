@@ -57,15 +57,19 @@ const savedItems = {
 
 /**
  * patch document and window for the component under test
+ *
+ * @returns {Object} contains relevant dom properties to the calling test.
  */
 export function mockStart (patch) {
   savedItems.window.pageYOffset = global.window.pageYOffset;
   savedItems.document.querySelector = global.document.querySelector;
-  savedItems.document.clientTop = global.document.documentElement.clientTop;
 
   global.window.pageYOffset = patch.pageYOffset;
   global.document.querySelector = patch.querySelector;
-  global.document.documentElement.clientTop = patch.clientTop;
+
+  return {
+    clientTop: global.document.documentElement.clientTop
+  };
 }
 
 /**
@@ -74,5 +78,4 @@ export function mockStart (patch) {
 export function mockEnd () {
   global.window.pageYOffset = savedItems.window.pageYOffset;
   global.document.querySelector = savedItems.document.querySelector;
-  global.document.documentElement.clientTop = savedItems.document.clientTop;
 }
