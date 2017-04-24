@@ -20,12 +20,16 @@ export function setMockReporter (reporter) {
   testReporter = reporter;
 }
 
-export const Simple = React.createClass({
-  getInitialState: function () {
-    return {
+export class Simple extends React.Component {
+  constructor (props) {
+    super(props);
+
+    this.state = {
       action: false
     };
-  },
+
+    this.executeAction = this.executeAction.bind(this);
+  }
 
   /**
    * This just toggles a state bool for testing.
@@ -33,7 +37,7 @@ export const Simple = React.createClass({
    * A conceptual placeholder for your flux flow action executor.
    * In this function, you would execute a size action.
    */
-  executeAction: function (data) {
+  executeAction (data) {
     reporter(data);
     this.setState({
       action: true
@@ -44,12 +48,12 @@ export const Simple = React.createClass({
         });
       }, 2000)
     });
-  },
+  }
 
   /**
    * Setup window resize handler and report this component size now
    */
-  componentDidMount: function () {
+  componentDidMount () {
     const sizeReporter = createSizeReporter('.contained', this.executeAction, {
       reportWidth: true
     });
@@ -59,23 +63,23 @@ export const Simple = React.createClass({
 
     // reportSize now.
     setTimeout(sizeReporter, 0);
-  },
+  }
 
   /**
    * Remove the window resize handler.
    */
-  componentWillUnmount: function () {
+  componentWillUnmount () {
     window.removeEventListener('resize', this.resizeHandler);
-  },
+  }
 
   /**
    * render and reflect if executeAction ran.
    */
-  render: function () {
+  render () {
     return (
       <div className="contained" style={{width: '100%'}}>
         <span>Simple Test {this.state.action ? 'Action' : ''}</span>
       </div>
     );
   }
-});
+}
