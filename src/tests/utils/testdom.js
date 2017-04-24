@@ -5,7 +5,23 @@
  * Start/stop jsdom environment
  */
 /* global global, document */
-import { jsdom } from 'jsdom';
+import { JSDOM } from 'jsdom';
+
+/**
+ * Wrap the JSDOM api.
+ *
+ * @param {String} markup - The markup to init JSDOM with.
+ * @param {Object} options - The options to init JSDOM with.
+ * @returns {Object} window, document, and navigator as { win, doc, nav }.
+ */
+function createJSDOM (markup, options) {
+  const dom = new JSDOM(markup, options);
+  return {
+    win: dom.window,
+    doc: dom.window.document,
+    nav: dom.window.navigator
+  };
+}
 
 /**
  * Shim document, window, and navigator with jsdom if not defined.
@@ -19,9 +35,13 @@ export function domStart (markup, addGlobals) {
 
   const globalKeys = [];
 
-  global.document = jsdom(markup || '<!doctype html><html><body></body></html>');
-  global.window = document.defaultView;
-  global.navigator = global.window.navigator;
+  const { win, doc, nav } = createJSDOM(
+    markup || '<!doctype html><html><body></body></html>'
+  );
+
+  global.document = doc;
+  global.window = win;
+  global.navigator = nav;
 
   if (addGlobals) {
     Object.keys(addGlobals).forEach(function (key) {
@@ -34,7 +54,7 @@ export function domStart (markup, addGlobals) {
 }
 
 /**
- * Remove globals
+ * Remove globals, stop and delete the window.
  */
 export function domStop (globalKeys) {
   if (globalKeys) {
@@ -42,6 +62,8 @@ export function domStop (globalKeys) {
       delete global.window[key];
     });
   }
+
+  global.window.close();
 
   delete global.document;
   delete global.window;
