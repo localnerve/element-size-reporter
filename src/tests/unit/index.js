@@ -57,7 +57,7 @@ describe('sizeReporter', () => {
     let testUtils;
 
     before('react', () => {
-      testUtils = require('react-addons-test-utils');
+      testUtils = require('react-dom/test-utils');
     });
 
     beforeEach(() => {
