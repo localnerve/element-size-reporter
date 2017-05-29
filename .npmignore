@@ -2,3 +2,8 @@
 coverage
 output
 src
+.jshint*
+.travis.yml
+*.tgz
+.eslint*
+.babel*

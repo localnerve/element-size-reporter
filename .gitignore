@@ -25,5 +25,7 @@ node_modules
 .nyc_output/
 /coverage
 /output
+/package
 /index.js
 tmp
+*.tgz
