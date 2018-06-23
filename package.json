@@ -50,7 +50,7 @@
     "chai": "^4.0.0",
     "coveralls": "^3.0.0",
     "cross-env": "^5.0.0",
-    "eslint": "^4.7.2",
+    "eslint": "^5.0.0",
     "eslint-plugin-react": "^7.4.0",
     "jsdom": "^11.2.0",
     "lodash": "^4.17.10",
