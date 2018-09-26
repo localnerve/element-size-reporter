@@ -1,10 +1,10 @@
 {
   "name": "element-size-reporter",
-  "version": "0.5.5",
+  "version": "0.6.0",
   "description": "Reports width, height, and top for selected DOM elements",
   "main": "index.js",
   "scripts": {
-    "test": "npm run lint && mocha src/tests/unit --recursive --reporter spec --compilers js:babel-register",
+    "test": "npm run lint && mocha src/tests/unit --recursive --reporter spec --compilers js:@babel/register",
     "test:debug": "rimraf output/ && babel ./src -d output -s inline && mocha output/tests/unit --recursive --reporter spec --debug-brk",
     "test:cover": "rimraf .nyc_output/ && cross-env BABEL_ENV=cover NYC_CWD=src nyc --reporter=lcov npm test",
     "build": "npm test && babel src/lib/index.js -o index.js",
@@ -41,12 +41,13 @@
     "test"
   ],
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-eslint": "^8.0.1",
-    "babel-plugin-istanbul": "^4.0.0",
-    "babel-preset-env": "^1.6.0",
-    "babel-preset-react": "^6.24.1",
-    "babel-register": "^6.26.0",
+    "@babel/cli": "^7.1.0",
+    "@babel/core": "^7.1.0",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/register": "^7.0.0",
+    "babel-eslint": "^10.0.0",
+    "babel-plugin-istanbul": "^5.0.1",
     "chai": "^4.0.0",
     "coveralls": "^3.0.0",
     "cross-env": "^5.0.0",
