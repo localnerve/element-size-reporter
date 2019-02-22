@@ -1,10 +1,10 @@
 {
   "name": "element-size-reporter",
-  "version": "0.6.4",
+  "version": "0.6.5",
   "description": "Reports width, height, and top for selected DOM elements",
   "main": "index.js",
   "scripts": {
-    "test": "npm run lint && mocha src/tests/unit --recursive --reporter spec --compilers js:@babel/register",
+    "test": "npm run lint && mocha src/tests/unit --recursive --reporter spec --require @babel/register",
     "test:debug": "rimraf output/ && babel ./src -d output -s inline && mocha output/tests/unit --recursive --reporter spec --debug-brk",
     "test:cover": "rimraf .nyc_output/ && cross-env BABEL_ENV=cover NYC_CWD=src nyc --reporter=lcov npm test",
     "build": "npm test && babel src/lib/index.js -o index.js",
@@ -55,7 +55,7 @@
     "eslint-plugin-react": "^7.10.0",
     "jsdom": "^13.0.0",
     "lodash": "^4.17.10",
-    "mocha": "^5.0.0",
+    "mocha": "^6.0.1",
     "nyc": "^13.0.0",
     "precommit-hook": "^3.0.0",
     "react": "^16.6.3",

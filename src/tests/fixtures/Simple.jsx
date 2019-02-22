@@ -41,12 +41,14 @@ export class Simple extends React.Component {
     reporter(data);
     this.setState({
       action: true
-    }, function () {
-      setTimeout(function () {
-        this.setState({
-          action: false
-        });
-      }, 2000)
+    }, () => {
+      setTimeout(() => {
+        if (global.window !== undefined) {
+          this.setState({
+            action: false
+          });  
+        }
+      }, 2000);
     });
   }
 
