@@ -1,6 +1,6 @@
 {
   "name": "element-size-reporter",
-  "version": "0.6.7",
+  "version": "0.7.0",
   "description": "Reports width, height, and top for selected DOM elements",
   "main": "index.js",
   "scripts": {
@@ -64,6 +64,6 @@
   },
   "dependencies": {},
   "engines": {
-    "node": ">= 6.x"
+    "node": ">= 8.x"
   }
 }
