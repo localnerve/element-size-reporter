@@ -52,7 +52,7 @@
     "coveralls": "^3.0.0",
     "cross-env": "^5.0.0",
     "eslint": "^5.0.0",
-    "eslint-plugin-react": "^7.10.0",
+    "eslint-plugin-react": "^7.14.2",
     "jsdom": "^15.1.1",
     "lodash": "^4.17.10",
     "mocha": "^6.1.2",
