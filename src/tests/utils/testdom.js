@@ -4,7 +4,7 @@
  *
  * Start/stop jsdom environment
  */
-/* global global, document */
+/* global document */
 import { JSDOM } from 'jsdom';
 
 /**
