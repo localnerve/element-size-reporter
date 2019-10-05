@@ -1,6 +1,6 @@
 {
   "name": "element-size-reporter",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "description": "Reports width, height, and top for selected DOM elements",
   "main": "index.js",
   "scripts": {
@@ -26,6 +26,9 @@
     "resize",
     "cloudinary"
   ],
+  "browserslist": [
+    "defaults"
+  ],
   "author": "Alex Grant (@localnerve)",
   "license": "BSD-3-Clause",
   "bugs": {
@@ -41,26 +44,26 @@
     "test"
   ],
   "devDependencies": {
-    "@babel/cli": "^7.1.2",
-    "@babel/core": "^7.1.2",
-    "@babel/preset-env": "^7.1.0",
+    "@babel/cli": "^7.6.2",
+    "@babel/core": "^7.6.2",
+    "@babel/preset-env": "^7.6.2",
     "@babel/preset-react": "^7.0.0",
-    "@babel/register": "^7.0.0",
-    "babel-eslint": "^10.0.0",
-    "babel-plugin-istanbul": "^5.0.1",
-    "chai": "^4.0.0",
-    "coveralls": "^3.0.0",
-    "cross-env": "^6.0.2",
-    "eslint": "^6.0.1",
-    "eslint-plugin-react": "^7.14.2",
+    "@babel/register": "^7.6.2",
+    "babel-eslint": "^10.0.3",
+    "babel-plugin-istanbul": "^5.2.0",
+    "chai": "^4.2.0",
+    "coveralls": "^3.0.6",
+    "cross-env": "^6.0.3",
+    "eslint": "^6.5.1",
+    "eslint-plugin-react": "^7.16.0",
     "jsdom": "^15.1.1",
-    "lodash": "^4.17.10",
-    "mocha": "^6.1.2",
-    "nyc": "^14.0.0",
+    "lodash": "^4.17.15",
+    "mocha": "^6.2.1",
+    "nyc": "^14.1.1",
     "precommit-hook": "^3.0.0",
-    "react": "^16.6.3",
-    "react-dom": "^16.6.3",
-    "rimraf": "^2.6.2"
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
+    "rimraf": "^3.0.0"
   },
   "dependencies": {},
   "engines": {
