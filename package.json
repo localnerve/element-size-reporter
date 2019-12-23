@@ -1,6 +1,6 @@
 {
   "name": "element-size-reporter",
-  "version": "0.7.3",
+  "version": "0.7.4",
   "description": "Reports width, height, and top for selected DOM elements",
   "main": "index.js",
   "scripts": {
@@ -50,7 +50,7 @@
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.6.2",
     "babel-eslint": "^10.0.3",
-    "babel-plugin-istanbul": "^5.2.0",
+    "babel-plugin-istanbul": "^6.0.0",
     "chai": "^4.2.0",
     "coveralls": "^3.0.6",
     "cross-env": "^6.0.3",
@@ -59,7 +59,7 @@
     "jsdom": "^15.1.1",
     "lodash": "^4.17.15",
     "mocha": "^6.2.1",
-    "nyc": "^14.1.1",
+    "nyc": "^15.0.0",
     "precommit-hook": "^3.0.0",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
