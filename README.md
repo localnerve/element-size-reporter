@@ -1,9 +1,7 @@
 # Element Size Reporter
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/localnerve/element-size-reporter.svg)](https://greenkeeper.io/)
-
 [![npm version](https://badge.fury.io/js/element-size-reporter.svg)](http://badge.fury.io/js/element-size-reporter)
-[![Build Status](https://travis-ci.org/localnerve/element-size-reporter.svg?branch=master)](https://travis-ci.org/localnerve/element-size-reporter)
+![Verify](https://github.com/localnerve/element-size-reporter/workflows/Verify/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/localnerve/element-size-reporter/badge.svg?branch=master)](https://coveralls.io/r/localnerve/element-size-reporter?branch=master)
 [![Dependency Status](https://david-dm.org/localnerve/element-size-reporter.svg)](https://david-dm.org/localnerve/element-size-reporter)
 [![devDependency Status](https://david-dm.org/localnerve/element-size-reporter/dev-status.svg)](https://david-dm.org/localnerve/element-size-reporter#info=devDependencies)
