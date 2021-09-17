@@ -1,6 +1,6 @@
 {
   "name": "element-size-reporter",
-  "version": "0.10.0",
+  "version": "0.10.1",
   "description": "Reports width, height, and top for selected DOM elements",
   "main": "index.js",
   "scripts": {
