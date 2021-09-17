@@ -2,7 +2,7 @@
   "env": {
     "node": true
   },
-  "parser": "babel-eslint",
+  "parser": "@babel/eslint-parser",
   "plugins": [
     "react"
   ],
