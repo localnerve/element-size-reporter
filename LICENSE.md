@@ -1,4 +1,4 @@
-Copyright (c) 2016 - 2021 Alex Grant, LocalNerve LLC
+Copyright (c) 2016 - 2022 Alex Grant, LocalNerve LLC
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
