@@ -57,6 +57,12 @@ describe('sizeReporter', () => {
     let testUtils;
 
     before('react', () => {
+      // ***
+      // *fix* node 15+ hang with jsdom and react lt 17.1.0
+      // https://github.com/facebook/react/issues/20756
+      // Since node.js 15, there is a global MessageChannel object now, which prevents node event loop from exiting
+      delete global.MessageChannel;
+      // ***
       testUtils = require('react-dom/test-utils');
     });
 
