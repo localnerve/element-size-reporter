@@ -2,18 +2,5 @@
   "presets": ["@babel/preset-env", "@babel/preset-react"],
   "only": [
     "src/*"
-  ],
-  "env": {
-    "cover": {
-      "plugins": [
-        [
-          "istanbul", {
-            "exclude": [
-              "src/tests"
-            ]
-          }
-        ]
-      ]
-    }
-  }
+  ]
 }
