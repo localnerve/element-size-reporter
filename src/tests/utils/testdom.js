@@ -39,6 +39,7 @@ export function domStart (markup, addGlobals) {
     markup || '<!doctype html><html><body></body></html>'
   );
 
+  global.IS_REACT_ACT_ENVIRONMENT = true;
   global.document = doc;
   global.window = win;
   global.navigator = nav;

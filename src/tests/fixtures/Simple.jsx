@@ -4,10 +4,10 @@
  *
  * React usage example and test fixture.
  */
-/* global window */
+/* eslint-env browser */
 import React from 'react';
 import debounce from 'lodash/debounce';
-import createSizeReporter from '../../lib';
+import createSizeReporter from '../../lib/index.js';
 
 let testReporter;
 function reporter (data) {

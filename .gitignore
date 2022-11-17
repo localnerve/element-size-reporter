@@ -27,5 +27,6 @@ node_modules
 /output
 /package
 /index.js
+/index.mjs
 tmp
 *.tgz

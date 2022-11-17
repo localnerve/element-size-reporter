@@ -2,12 +2,15 @@
  * Copyright (c) 2016 - 2022 Alex Grant (@localnerve), LocalNerve LLC
  * Copyrights licensed under the BSD License. See the accompanying LICENSE file for terms.
  */
+/* eslint-env browser */
 /* global before, beforeEach, after, afterEach, describe, it */
 import { expect } from 'chai';
 import React from 'react';
-import { domStart, domStop, mockStart, mockEnd } from '../utils/testdom';
-import { Simple, setMockReporter } from '../fixtures/Simple';
-import createSizeReporter from '../../lib';
+import ReactDOM from 'react-dom/client';
+import { act } from 'react-dom/test-utils';
+import { domStart, domStop, mockStart, mockEnd } from '../utils/testdom.js';
+import { Simple, setMockReporter } from '../fixtures/Simple.jsx';
+import createSizeReporter from '../../lib/index.js';
 
 describe('sizeReporter', () => {
   let testUtils;
@@ -54,19 +57,13 @@ describe('sizeReporter', () => {
   });
 
   describe('react', () => {
-    let testUtils;
-
-    before('react', () => {
-      // ***
-      // *fix* node 15+ hang with jsdom and react lt 17.1.0
-      // https://github.com/facebook/react/issues/20756
-      // Since node.js 15, there is a global MessageChannel object now, which prevents node event loop from exiting
-      delete global.MessageChannel;
-      // ***
-      testUtils = require('react-dom/test-utils');
-    });
+    let container;
 
     beforeEach(() => {
+      // DOM is already started
+      container = document.createElement('div');
+      document.body.appendChild(container);
+
       // Clear the group trackers
       createSizeReporter(null, null, {
         _clearTrackers: true
@@ -74,55 +71,66 @@ describe('sizeReporter', () => {
     });
 
     afterEach(() => {
+      // DOM is already started
+      document.body.removeChild(container);
+      container = null;
+
       setMockReporter(null);
     });
 
-    it('should render and execute action', (done) => {
-      const element = React.createElement(Simple);
-      const component = testUtils.renderIntoDocument(element);
-      const result = testUtils.findRenderedDOMComponentWithClass(
-        component, 'contained'
-      );
+    it('should render and execute action', async () => {
+      act(() => {
+        const element = React.createElement(Simple);
+        ReactDOM.createRoot(container).render(element);
+      });
 
-      // Render test
+      const result = document.querySelector('.contained');
       expect(result.textContent).to.match(/Simple Test/);
 
-      setTimeout(function () {
-        // Action test. Executes on componentDidMount so action should've run.
-        expect(result.textContent).to.match(/Action/);
-        done();
-      }, 0);
+      return new Promise(res => {
+        setTimeout(() => {
+          // Action test. Executes on componentDidMount so action should've run.
+          expect(result.textContent).to.match(/Action/);
+          res();
+        }, 0);
+      });
     });
 
-    it('should accumulate if multiple reporters in same group', (done) => {
+    it('should accumulate if multiple reporters in same group', async () => {
       const reporters = 2;
       let reportCall = 0;
 
-      /**
-       * @param {Object} data - the report data from size reporter under test.
-       */
-      function handleReport (data) {
-        if (reportCall === 0) {
-          // First time, you want to overwrite the data.
-          expect(data.accumulate).to.be.false;
-        } else {
-          // After that, you're accumulating.
-          expect(data.accumulate).to.be.true;
+      const result = new Promise(res => {
+        /**
+         * @param {Object} data - the report data from size reporter under test.
+         */
+        function handleReport (data) {
+          if (reportCall === 0) {
+            // First time, you want to overwrite the data.
+            expect(data.accumulate).to.be.false;
+          } else {
+            // After that, you're accumulating.
+            expect(data.accumulate).to.be.true;
+          }
+
+          reportCall++;
+          if (reportCall === reporters) {
+            res();
+          }
         }
 
-        reportCall++;
-        if (reportCall === reporters) {
-          done();
-        }
-      }
-
-      setMockReporter(handleReport);
-
-      const children = [Simple, Simple].map((childClass, index) => {
-        return React.createElement(childClass, { key: index });
+        setMockReporter(handleReport);
       });
 
-      testUtils.renderIntoDocument(React.createElement('div', {}, children));
+      await act(() => {
+        const children = [Simple, Simple].map((childClass, index) => {
+          return React.createElement(childClass, { key: index });
+        });
+        const element = React.createElement('div', {}, children);
+        ReactDOM.createRoot(container).render(element);
+      });
+
+      return result;
     });
   });
 
