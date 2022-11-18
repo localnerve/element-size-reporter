@@ -5,7 +5,7 @@
  *
  * Report selected DOM element size and top.
  */
-/* global document, window */
+/* eslint-env browser */
 const __DEV__ = process.env.NODE_ENV !== 'production';
 
 /***

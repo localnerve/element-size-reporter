@@ -1,10 +1,12 @@
-.nyc_output
+.git*
 coverage
 output
 src
+tmp
 .jshint*
 .travis.yml
 *.tgz
 .eslint*
 .babel*
-tmp
+.c8*
+.browser*

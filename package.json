@@ -1,15 +1,20 @@
 {
   "name": "element-size-reporter",
-  "version": "0.11.4",
+  "version": "0.12.0",
   "description": "Reports width, height, and top for selected DOM elements",
   "main": "index.js",
+  "exports": {
+    "require": "./index.js",
+    "import": "./index.mjs",
+    "default": "./index.js"
+  },
   "scripts": {
-    "test": "npm run lint && mocha src/tests/unit --recursive --reporter spec --require @babel/register",
+    "test": "mocha src/tests/unit --recursive --reporter spec --require @babel/register",
     "test:debug": "rimraf output/ && babel ./src -d output -s inline && mocha output/tests/unit --recursive --reporter spec --inspect-brk",
     "test:cover": "c8 -- npm test",
     "build": "npm test && babel src/lib/index.js -o index.js",
     "lint": "eslint .",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "npm run build && node -e 'require(\"fs\").copyFileSync(\"src/lib/index.js\",\"index.mjs\");'",
     "validate": "npm ls"
   },
   "repository": {
@@ -39,23 +44,23 @@
     "test"
   ],
   "devDependencies": {
-    "@babel/cli": "^7.18.10",
-    "@babel/core": "^7.18.10",
+    "@babel/cli": "^7.19.3",
+    "@babel/core": "^7.20.2",
     "@babel/preset-env": "^7.18.10",
     "@babel/preset-react": "^7.18.6",
     "@babel/register": "^7.18.9",
-    "@babel/eslint-parser": "7.18.9",
+    "@babel/eslint-parser": "7.19.1",
     "c8": "^7.12.0",
     "chai": "^4.3.6",
     "cross-env": "^7.0.3",
-    "eslint": "^8.21.0",
-    "eslint-plugin-react": "^7.30.1",
-    "jsdom": "^20.0.0",
+    "eslint": "^8.27.0",
+    "eslint-plugin-react": "^7.31.10",
+    "jsdom": "^20.0.2",
     "lodash": "^4.17.21",
-    "mocha": "^10.0.0",
+    "mocha": "^10.1.0",
     "precommit-hook": "^3.0.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "rimraf": "^3.0.2"
   },
   "dependencies": {},
