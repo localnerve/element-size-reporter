@@ -79,7 +79,7 @@ describe('sizeReporter', () => {
     });
 
     it('should render and execute action', async () => {
-      act(() => {
+      await act(() => {
         const element = React.createElement(Simple);
         ReactDOM.createRoot(container).render(element);
       });
