@@ -1,20 +1,20 @@
 {
   "name": "element-size-reporter",
-  "version": "0.12.0",
+  "version": "0.12.1",
   "description": "Reports width, height, and top for selected DOM elements",
-  "main": "index.js",
+  "main": "dist/index.js",
   "exports": {
-    "require": "./index.js",
-    "import": "./index.mjs",
-    "default": "./index.js"
+    "require": "./dist/index.js",
+    "import": "./dist/index.mjs",
+    "default": "./dist/index.js"
   },
   "scripts": {
     "test": "mocha src/tests/unit --recursive --reporter spec --require @babel/register",
     "test:debug": "rimraf output/ && babel ./src -d output -s inline && mocha output/tests/unit --recursive --reporter spec --inspect-brk",
     "test:cover": "c8 -- npm test",
-    "build": "npm test && babel src/lib/index.js -o index.js",
+    "build": "rimraf ./dist && babel src/lib/index.js -o ./dist/index.js && node -e 'require(\"fs\").copyFileSync(\"src/lib/index.js\",\"./dist/index.mjs\");'",
     "lint": "eslint .",
-    "prepublishOnly": "npm run build && node -e 'require(\"fs\").copyFileSync(\"src/lib/index.js\",\"index.mjs\");'",
+    "prepublishOnly": "npm run build",
     "validate": "npm ls"
   },
   "repository": {
