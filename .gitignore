@@ -24,6 +24,7 @@ node_modules
 # Project specific
 .nyc_output/
 /coverage
+/dist
 /output
 /package
 /index.js
