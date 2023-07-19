@@ -1,5 +1,5 @@
 /***
- * Copyright (c) 2016 - 2022 Alex Grant (@localnerve), LocalNerve LLC
+ * Copyright (c) 2016 - 2023 Alex Grant (@localnerve), LocalNerve LLC
  * Copyrights licensed under the BSD License. See the accompanying LICENSE file for terms.
  */
 /* eslint-env browser */
@@ -92,7 +92,7 @@ describe('sizeReporter', () => {
           // Action test. Executes on componentDidMount so action should've run.
           expect(result.textContent).to.match(/Action/);
           res();
-        }, 0);
+        }, 250);
       });
     });
 
