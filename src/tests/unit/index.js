@@ -92,7 +92,7 @@ describe('sizeReporter', () => {
           // Action test. Executes on componentDidMount so action should've run.
           expect(result.textContent).to.match(/Action/);
           res();
-        }, 0);
+        }, 250);
       });
     });
 
