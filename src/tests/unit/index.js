@@ -13,7 +13,6 @@ import { Simple, setMockReporter } from '../fixtures/Simple.jsx';
 import createSizeReporter from '../../lib/index.js';
 
 describe('sizeReporter', () => {
-  let testUtils;
 
   before('sizeReporter', () => {
     domStart();
@@ -130,7 +129,7 @@ describe('sizeReporter', () => {
         ReactDOM.createRoot(container).render(element);
       });
 
-      return result;
+      return act(() => result);
     });
   });
 
