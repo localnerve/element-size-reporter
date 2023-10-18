@@ -1,6 +1,6 @@
 {
   "name": "element-size-reporter",
-  "version": "0.14.0",
+  "version": "0.14.1",
   "description": "Reports width, height, and top for selected DOM elements",
   "main": "dist/index.js",
   "exports": {
@@ -44,16 +44,16 @@
     "test"
   ],
   "devDependencies": {
-    "@babel/cli": "^7.22.15",
-    "@babel/core": "^7.22.15",
+    "@babel/cli": "^7.23.0",
+    "@babel/core": "^7.23.2",
     "@babel/eslint-parser": "7.22.15",
-    "@babel/preset-env": "^7.22.15",
+    "@babel/preset-env": "^7.23.2",
     "@babel/preset-react": "^7.22.15",
     "@babel/register": "^7.22.15",
     "c8": "^8.0.1",
-    "chai": "^4.3.8",
+    "chai": "^4.3.10",
     "cross-env": "^7.0.3",
-    "eslint": "^8.49.0",
+    "eslint": "^8.51.0",
     "eslint-plugin-react": "^7.33.2",
     "jsdom": "^22.1.0",
     "lodash": "^4.17.21",
@@ -61,7 +61,7 @@
     "precommit-hook": "^3.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "rimraf": "^5.0.1"
+    "rimraf": "^5.0.5"
   },
   "dependencies": {},
   "engines": {
