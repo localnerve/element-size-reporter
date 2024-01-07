@@ -1,10 +1,10 @@
 /***
- * Copyright (c) 2016 - 2023 Alex Grant (@localnerve), LocalNerve LLC
+ * Copyright (c) 2016 - 2024 Alex Grant (@localnerve), LocalNerve LLC
  * Copyrights licensed under the BSD License. See the accompanying LICENSE file for terms.
  */
 /* eslint-env browser */
 /* global before, beforeEach, after, afterEach, describe, it */
-import { expect } from 'chai';
+import * as assert from 'node:assert';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { act } from 'react-dom/test-utils';
@@ -26,10 +26,10 @@ describe('sizeReporter', () => {
     it('should report and have expected report items with correct types',
     (done) => {
       const reporter = createSizeReporter('.nothing', (data) => {
-        expect(typeof data.width).to.equal('number');
-        expect(typeof data.height).to.equal('number');
-        expect(typeof data.top).to.equal('number');
-        expect(typeof data.accumulate).to.equal('boolean');
+        assert.equal(typeof data.width, 'number');
+        assert.equal(typeof data.height, 'number');
+        assert.equal(typeof data.top, 'number');
+        assert.equal(typeof data.accumulate, 'boolean');
         done();
       }, {
         reportWidth: true,
@@ -43,15 +43,15 @@ describe('sizeReporter', () => {
 
   describe('bad args', () => {
     it('should throw if no selector supplied', () => {
-      expect(function () {
+      assert.throws(function () {
         createSizeReporter('', () => {});
-      }).to.throw(Error);
+      });
     });
 
     it('should throw if no reporter function supplied', () => {
-      expect(function () {
+      assert.throws(function () {
         createSizeReporter('.nothing', 'bad');
-      }).to.throw(Error);
+      });
     });
   });
 
@@ -78,18 +78,21 @@ describe('sizeReporter', () => {
     });
 
     it('should render and execute action', async () => {
+      let result;
       await act(() => {
         const element = React.createElement(Simple);
         ReactDOM.createRoot(container).render(element);
       });
 
-      const result = document.querySelector('.contained');
-      expect(result.textContent).to.match(/Simple Test/);
+      await act(() => {
+        result = document.querySelector('.contained');
+        assert.match(result.textContent, /Simple Test/);
+      });
 
       return new Promise(res => {
         setTimeout(() => {
           // Action test. Executes on componentDidMount so action should've run.
-          expect(result.textContent).to.match(/Action/);
+          assert.match(result.textContent, /Action/);
           res();
         }, 250);
       });
@@ -106,10 +109,10 @@ describe('sizeReporter', () => {
         function handleReport (data) {
           if (reportCall === 0) {
             // First time, you want to overwrite the data.
-            expect(data.accumulate).to.be.false;
+            assert.equal(data.accumulate, false);
           } else {
             // After that, you're accumulating.
-            expect(data.accumulate).to.be.true;
+            assert.equal(data.accumulate, true);
           }
 
           reportCall++;
@@ -171,12 +174,12 @@ describe('sizeReporter', () => {
 
     it('should compute values as expected', (done) => {
       const reporter = createSizeReporter('.mock', (data) => {
-        expect(data.width).to.equal(Math.round(right - left));
-        expect(data.height).to.equal(Math.round(bottom - top));
-        expect(data.top).to.equal(Math.round(
+        assert.equal(data.width, Math.round(right - left));
+        assert.equal(data.height, Math.round(bottom - top));
+        assert.equal(data.top, Math.round(
           top + (pageYOffset - domProps.clientTop)
         ));
-        expect(data.accumulate).to.equal(false);
+        assert.equal(data.accumulate, false);
         done();
       }, {
         reportWidth: true,
@@ -191,7 +194,7 @@ describe('sizeReporter', () => {
       const multiple = 10;
 
       const reporter = createSizeReporter('.mock', (data) => {
-        expect(data.width).to.equal(
+        assert.equal(data.width,
           Math.ceil((right - left)/multiple) * multiple
         );
         done();
@@ -209,10 +212,10 @@ describe('sizeReporter', () => {
       const multiple = 10;
 
       const reporter = createSizeReporter('.mock', (data) => {
-        expect(data.top).to.equal(
+        assert.equal(data.top,
           Math.floor((top + (pageYOffset - domProps.clientTop))/multiple) * multiple
         );
-        expect(data.top - (pageYOffset - domProps.clientTop)).to.be.below(top);
+        assert.equal((data.top - (pageYOffset - domProps.clientTop)) < top, true);
         done();
       }, {
         reportTop: true,
@@ -226,7 +229,7 @@ describe('sizeReporter', () => {
 
     it('should handle missing grow option with round', (done) => {
       const reporter = createSizeReporter('.mock', (data) => {
-        expect(data.width).to.equal(
+        assert.equal(data.width,
           Math.round(right - left)
         );
         done();
@@ -239,7 +242,7 @@ describe('sizeReporter', () => {
 
     it('should handle missing grow option prop without round', (done) => {
       const reporter = createSizeReporter('.mock', (data) => {
-        expect(data.width).to.equal(
+        assert.equal(data.width,
           Math.ceil(right - left)
         );
         done();
