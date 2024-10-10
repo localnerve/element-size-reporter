@@ -9,8 +9,8 @@
     "default": "./dist/index.js"
   },
   "scripts": {
-    "test": "mocha src/tests/unit --recursive --reporter spec --require @babel/register",
-    "test:debug": "rimraf output/ && babel ./src -d output -s inline && mocha output/tests/unit --recursive --reporter spec --inspect-brk",
+    "test": "mocha src/tests/unit --no-experimental-global-navigator --recursive --reporter spec --require @babel/register",
+    "test:debug": "rimraf output/ && babel ./src -d output -s inline && mocha output/tests/unit --no-experimental-global-navigator --recursive --reporter spec --inspect-brk",
     "test:cover": "c8 -- npm test",
     "build": "rimraf ./dist && babel src/lib/index.js -o ./dist/index.js && node -e 'require(\"fs\").copyFileSync(\"src/lib/index.js\",\"./dist/index.mjs\");'",
     "lint": "eslint .",
